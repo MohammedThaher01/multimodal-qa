@@ -2,6 +2,5 @@ ultralytics
 langchain-google-genai
 python-dotenv
 numpy
-gradio==4.44.1
 pillow
 google-generativeai
