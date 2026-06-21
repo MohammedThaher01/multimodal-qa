@@ -4,3 +4,4 @@ python-dotenv
 numpy
 pillow
 google-generativeai
+gradio==6.16.0
