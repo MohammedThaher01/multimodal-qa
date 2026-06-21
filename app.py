@@ -102,4 +102,4 @@ with gr.Blocks(theme=gr.themes.Soft(primary_hue="indigo", secondary_hue="slate",
 
 # 3. Launch the Server
 if __name__ == "__main__":
-    demo.launch()
+    demo.launch(ssr_mode=False)
