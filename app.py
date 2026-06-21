@@ -102,11 +102,7 @@ with gr.Blocks() as demo:
 
 # 3. Launch the Server
 if __name__ == "__main__":
-    # Standard launch for Hugging Face Spaces
-    # - ssr_mode=False bypasses Gradio 6 networking crashes
-    # - theme is passed here instead of Blocks() to prevent warnings that cause health-check timeouts
     demo.launch(
-        ssr_mode=False, 
         theme=gr.themes.Soft(
             primary_hue="indigo", 
             secondary_hue="slate", 
