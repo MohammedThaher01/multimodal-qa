@@ -90,5 +90,4 @@ with gr.Blocks(theme=gr.themes.Soft(primary_hue="indigo", secondary_hue="slate",
     )
 
 if __name__ == "__main__":
-    # Standard launch for Hugging Face Spaces
-    demo.launch()
+    demo.launch(server_name="0.0.0.0", server_port=7860, show_api=False)
