@@ -2,13 +2,25 @@ import gradio as gr
 from PIL import Image
 from extractor import SpatialExtractor
 from llm_chain import VisionQASystem
+import traceback
 
-# 1. Initialize our two engines globally so they don't reload on every click
-# Set to None initially so the server boots instantly
+# 1. Global Initialization (The "Lazy Load" Trick)
+# We set these to None so the server boots instantly in 0.1 seconds.
+# This prevents the Hugging Face UI from timing out and getting stuck on "Starting".
 extractor = None
 qa_system = None
 
 def process_qa(image, question, progress=gr.Progress()):
+    global extractor, qa_system
+    
+    # Lazy load the heavy AI models ONLY when the user clicks the button for the first time
+    if extractor is None or qa_system is None:
+        progress(0.1, desc="Booting AI Engines (First run takes ~30 seconds)...")
+        print("DEBUG: Lazy loading AI engines...")
+        extractor = SpatialExtractor()
+        qa_system = VisionQASystem()
+        print("DEBUG: Engines Ready!")
+
     print(f"DEBUG: Processing started. Question: {question}")
     if image is None:
         print("DEBUG: No image provided.")
@@ -19,18 +31,19 @@ def process_qa(image, question, progress=gr.Progress()):
         
     try:
         # Stage 1: The Eyes (CNN) -> Get absolute spatial data
-        progress(0.2, desc="Stage 1: YOLOv8 Spatial Analysis...")
+        progress(0.4, desc="Stage 1: YOLOv8 Spatial Analysis...")
         print("DEBUG: Starting YOLO analysis...")
         yolo_metadata = extractor.analyze_image(image)
         print(f"DEBUG: YOLO metadata extracted: {yolo_metadata[:50]}...")
     except Exception as e:
         error_msg = f"ERROR during YOLO analysis: {str(e)}"
         print(f"DEBUG: {error_msg}")
+        traceback.print_exc()
         return "⚠️ Error in Stage 1 (YOLO)", error_msg
 
     try:
         # Stage 2: The Brain (Transformer) -> Reason over data + image
-        progress(0.6, desc="Stage 2: Gemini Multimodal Reasoning...")
+        progress(0.8, desc="Stage 2: Gemini Multimodal Reasoning...")
         print("DEBUG: Starting Gemini analysis...")
         final_answer = qa_system.ask_question(image, yolo_metadata, question)
         print("DEBUG: Gemini analysis complete.")
@@ -45,10 +58,10 @@ def process_qa(image, question, progress=gr.Progress()):
     except Exception as e:
         error_msg = f"ERROR during Gemini analysis: {str(e)}"
         print(f"DEBUG: {error_msg}")
-        import traceback
         traceback.print_exc()
-        # Ensure we still return something valid for the UI to display
-        return f"## 🔍 Stage 1: Spatial Metadata\n\n{yolo_metadata}", f"### ⚠️ ERROR during Stage 2\n\n{error_msg}"
+        # Fallback to ensure we still return something valid for the UI to display
+        meta = yolo_metadata if 'yolo_metadata' in locals() else "Metadata extraction failed."
+        return f"## 🔍 Stage 1: Spatial Metadata\n\n{meta}", f"### ⚠️ ERROR during Stage 2\n\n{error_msg}"
 
 
 # 2. Build a professional, two-column UI using Gradio Blocks
@@ -78,8 +91,6 @@ with gr.Blocks() as demo:
             with gr.Group():
                 gr.Markdown("### 🧠 Stage 2: AI Reasoning")
                 output_answer = gr.Markdown(value="*AI reasoning will appear here after analysis*")
-
-
             
     # Connect the button to our pipeline function
     submit_btn.click(
@@ -88,8 +99,12 @@ with gr.Blocks() as demo:
         outputs=[output_metadata, output_answer]
     )
 
+
+# 3. Launch the Server
 if __name__ == "__main__":
-    # Standard launch for Hugging Face Spaces (with theme moved here to prevent health-check timeouts)
+    # Standard launch for Hugging Face Spaces
+    # - ssr_mode=False bypasses Gradio 6 networking crashes
+    # - theme is passed here instead of Blocks() to prevent warnings that cause health-check timeouts
     demo.launch(
         ssr_mode=False, 
         theme=gr.themes.Soft(
