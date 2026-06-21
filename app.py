@@ -4,10 +4,9 @@ from extractor import SpatialExtractor
 from llm_chain import VisionQASystem
 
 # 1. Initialize our two engines globally so they don't reload on every click
-print("Initializing AI Engines... This might take a few seconds.")
-extractor = SpatialExtractor()
-qa_system = VisionQASystem()
-print("Engines Ready!")
+# Set to None initially so the server boots instantly
+extractor = None
+qa_system = None
 
 def process_qa(image, question, progress=gr.Progress()):
     print(f"DEBUG: Processing started. Question: {question}")
