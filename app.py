@@ -53,7 +53,7 @@ def process_qa(image, question, progress=gr.Progress()):
 
 
 # 2. Build a professional, two-column UI using Gradio Blocks
-with gr.Blocks(theme=gr.themes.Soft(primary_hue="indigo", secondary_hue="slate", font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "system-ui", "sans-serif"])) as demo:
+with gr.Blocks() as demo:
     gr.Markdown("# 🧠 Grounded Multimodal Visual Q&A")
     gr.Markdown("Architecture: **YOLOv8 Medium** (Spatial Verification) ➔ **Gemini 3.5 Flash** (Cognitive Reasoning)")
     
@@ -90,4 +90,12 @@ with gr.Blocks(theme=gr.themes.Soft(primary_hue="indigo", secondary_hue="slate",
     )
 
 if __name__ == "__main__":
-    demo.launch(ssr_mode=False)
+    # Standard launch for Hugging Face Spaces (with theme moved here to prevent health-check timeouts)
+    demo.launch(
+        ssr_mode=False, 
+        theme=gr.themes.Soft(
+            primary_hue="indigo", 
+            secondary_hue="slate", 
+            font=[gr.themes.GoogleFont("Inter"), "ui-sans-serif", "system-ui", "sans-serif"]
+        )
+    )
