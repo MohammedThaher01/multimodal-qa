@@ -63,7 +63,7 @@ with gr.Blocks(theme=gr.themes.Soft(primary_hue="indigo", secondary_hue="slate",
         </div>
     """)
     
-    with gr.Row(gap=30):
+    with gr.Row():
         # Left Column: Inputs
         with gr.Column(scale=5, min_width=350):
             gr.Markdown("### 📥 Input Panel")
@@ -80,7 +80,6 @@ with gr.Blocks(theme=gr.themes.Soft(primary_hue="indigo", secondary_hue="slate",
             gr.Markdown("### 📤 Analysis Results")
             
             # Grouping gives a clean card-like appearance.
-            # Removed the hardcoded Markdown headers here because your Python function returns them dynamically.
             with gr.Group():
                 output_metadata = gr.Markdown(value="*Stage 1 spatial data will appear here after analysis...*")
             
