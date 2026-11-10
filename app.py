@@ -35,7 +35,7 @@ def process_qa(image, question, progress=gr.Progress()):
         return "Please ask a question.", "No question provided."
 
     try:
-        # Stage 1: Spatial Analysis (YOLOv8)
+        # Stage 1: YOLOv8 Spatial Analysis
         progress(0.2, desc="Stage 1: YOLOv8 Spatial Analysis...")
 
         print("DEBUG: Starting YOLO analysis...")
@@ -56,7 +56,7 @@ def process_qa(image, question, progress=gr.Progress()):
         return "Error in Stage 1 (YOLO)", error_msg
 
     try:
-        # Stage 2: Multimodal Reasoning (Gemini)
+        # Stage 2: Gemini Multimodal Reasoning
         progress(0.6, desc="Stage 2: Gemini Multimodal Reasoning...")
 
         print("DEBUG: Starting Gemini analysis...")
@@ -71,12 +71,7 @@ def process_qa(image, question, progress=gr.Progress()):
 
         progress(1.0, desc="Analysis Complete!")
 
-        # Return content directly.
-        # The UI cards already have their own headings.
-        styled_yolo = str(yolo_metadata)
-        styled_answer = str(final_answer)
-
-        return styled_yolo, styled_answer
+        return str(yolo_metadata), str(final_answer)
 
     except Exception as e:
 
@@ -93,42 +88,58 @@ def process_qa(image, question, progress=gr.Progress()):
 
 
 # ============================================================
-# 3. CUSTOM CSS
+# 3. RED THEME CSS
 # ============================================================
 
 CSS = """
 
 /* =========================================================
-   GLOBAL THEME
+   COLOR SYSTEM
    ========================================================= */
 
 :root {
-    --bg: #0b0f16;
-    --surface: #111722;
-    --surface-light: #171f2d;
-    --surface-input: #151e2c;
+    --bg: #0b0d11;
+    --surface: #12161e;
+    --surface-light: #191e28;
+    --surface-input: #171c26;
 
-    --border: #293449;
-    --border-light: #354157;
+    --border: #2b303b;
+    --border-light: #3a414f;
 
-    --text-primary: #e8edf5;
-    --text-secondary: #a3afc1;
-    --text-muted: #7d8ba1;
+    --text-primary: #f1f2f4;
+    --text-secondary: #b0b7c3;
+    --text-muted: #858e9d;
 
-    --accent: #a99aff;
-    --accent-strong: #8875ee;
+    --accent: #ef4444;
+    --accent-light: #ff6565;
+    --accent-dark: #b91c1c;
+
+    --accent-bg: #351719;
+    --accent-border: #69282b;
+}
+
+
+/* =========================================================
+   GLOBAL
+   ========================================================= */
+
+body {
+    background: var(--bg) !important;
 }
 
 .gradio-container {
     max-width: 1440px !important;
     margin: 0 auto !important;
+
     background: var(--bg) !important;
     color: var(--text-primary) !important;
+
     font-family: Inter, ui-sans-serif, system-ui, sans-serif !important;
 }
 
-body {
-    background: var(--bg) !important;
+.gradio-container,
+.gradio-container * {
+    scrollbar-color: #444c59 #11151c;
 }
 
 footer {
@@ -137,7 +148,7 @@ footer {
 
 
 /* =========================================================
-   HERO SECTION
+   HERO
    ========================================================= */
 
 #hero {
@@ -152,11 +163,11 @@ footer {
 
     padding: 7px 13px;
 
-    background: #191b2b;
-    border: 1px solid #36324f;
+    background: #241719 !important;
+    border: 1px solid #633036 !important;
     border-radius: 30px;
 
-    color: #c0b5ff;
+    color: #ff8585 !important;
 
     font-size: 11px;
     font-weight: 700;
@@ -167,12 +178,12 @@ footer {
 }
 
 #hero .eyebrow span {
-    color: #9d8cff;
+    color: #f05252 !important;
     font-size: 9px;
 }
 
 #hero h1 {
-    color: #f1f4f9;
+    color: #f5f5f5 !important;
 
     font-size: clamp(30px, 4vw, 46px);
     font-weight: 800;
@@ -186,18 +197,19 @@ footer {
 #hero h1 span {
     background: linear-gradient(
         100deg,
-        #b5a8ff,
-        #8a75f0,
-        #c4a6ed
-    );
+        #ff7777,
+        #ef4444,
+        #bd2525
+    ) !important;
 
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
+    -webkit-background-clip: text !important;
+    background-clip: text !important;
+
+    color: transparent !important;
 }
 
 #hero p {
-    color: var(--text-secondary);
+    color: #aeb6c3 !important;
 
     font-size: 14px;
     line-height: 1.8;
@@ -208,7 +220,7 @@ footer {
 
 
 /* =========================================================
-   PIPELINE INDICATOR
+   PIPELINE
    ========================================================= */
 
 #pipeline {
@@ -229,23 +241,23 @@ footer {
 
     padding: 9px 15px;
 
-    background: #141b27;
-    border: 1px solid var(--border);
+    background: #171a22 !important;
+    border: 1px solid #333743 !important;
     border-radius: 8px;
 
-    color: #cbd5e1;
+    color: #d3d7de !important;
 
     font-size: 12px;
     font-weight: 600;
 }
 
 #pipeline .number {
-    color: #b2a4ff;
+    color: #ff7474 !important;
     font-weight: 800;
 }
 
 #pipeline .arrow {
-    color: #6d638f;
+    color: #d34c4c !important;
     font-size: 16px;
 }
 
@@ -265,13 +277,13 @@ footer {
 
     padding: 22px !important;
 
-    background: var(--surface) !important;
-    border: 1px solid var(--border) !important;
+    background: #12161e !important;
+    border: 1px solid #2b303b !important;
     border-radius: 14px !important;
 }
 
 .panel-title {
-    color: var(--text-primary);
+    color: #f0f1f3 !important;
 
     font-size: 16px;
     font-weight: 700;
@@ -280,7 +292,7 @@ footer {
 }
 
 .panel-subtitle {
-    color: var(--text-secondary);
+    color: #aeb6c3 !important;
 
     font-size: 12px;
     line-height: 1.7;
@@ -290,12 +302,12 @@ footer {
 
 
 /* =========================================================
-   INPUT LABELS AND CONTROLS
+   INPUTS
    ========================================================= */
 
 .panel label,
 .panel .wrap label {
-    color: #dce3ed !important;
+    color: #e1e4e9 !important;
 
     font-size: 13px !important;
     font-weight: 600 !important;
@@ -303,42 +315,40 @@ footer {
 
 .panel textarea,
 .panel input {
-    background: var(--surface-input) !important;
+    background: #171c26 !important;
 
-    border: 1px solid var(--border-light) !important;
+    border: 1px solid #39404d !important;
     border-radius: 9px !important;
 
-    color: #e8edf5 !important;
+    color: #f0f2f5 !important;
 
     font-size: 14px !important;
 }
 
 .panel textarea::placeholder,
 .panel input::placeholder {
-    color: #8290a5 !important;
+    color: #8993a2 !important;
 }
 
 .panel textarea:focus,
 .panel input:focus {
-    border-color: #9583f5 !important;
+    border-color: #ef4444 !important;
 
     box-shadow: 0 0 0 2px
-        rgba(149, 131, 245, 0.13) !important;
+        rgba(239, 68, 68, 0.16) !important;
 }
-
-/* Image upload area */
 
 .panel .image-container,
 .panel .upload-container {
-    background: #101722 !important;
+    background: #151a23 !important;
 
-    border: 1px dashed #46516a !important;
+    border: 1px dashed #55515a !important;
     border-radius: 10px !important;
 }
 
 
 /* =========================================================
-   BUTTONS
+   PRIMARY BUTTON
    ========================================================= */
 
 #analyze-btn,
@@ -347,13 +357,13 @@ footer {
 
     background: linear-gradient(
         110deg,
-        #7866e8,
-        #9270e9
+        #c92d35,
+        #ef4444
     ) !important;
 
     color: #ffffff !important;
 
-    border: none !important;
+    border: 1px solid #ef4444 !important;
     border-radius: 9px !important;
 
     font-weight: 700 !important;
@@ -362,31 +372,43 @@ footer {
 }
 
 #analyze-btn button:hover {
-    filter: brightness(1.12);
+    background: linear-gradient(
+        110deg,
+        #df343c,
+        #ff5959
+    ) !important;
+
+    border-color: #ff6969 !important;
 
     transform: translateY(-1px);
 
     box-shadow: 0 5px 18px
-        rgba(120, 102, 232, 0.2);
+        rgba(239, 68, 68, 0.22) !important;
 }
+
+
+/* =========================================================
+   CLEAR BUTTON
+   ========================================================= */
 
 #clear-btn,
 #clear-btn button {
     min-height: 46px !important;
 
-    background: #1b2433 !important;
+    background: #1d222c !important;
 
-    color: #c3cddd !important;
+    color: #c5cbd5 !important;
 
-    border: 1px solid #354157 !important;
+    border: 1px solid #3a414f !important;
     border-radius: 9px !important;
 
     font-weight: 600 !important;
 }
 
 #clear-btn button:hover {
-    background: #253044 !important;
-    color: #f1f5f9 !important;
+    background: #292e39 !important;
+    color: #ffffff !important;
+    border-color: #555d6b !important;
 }
 
 
@@ -399,24 +421,22 @@ footer {
 }
 
 .panel .examples-holder button {
-    background: #151e2c !important;
+    background: #171c26 !important;
 
-    border: 1px solid var(--border) !important;
+    border: 1px solid #343b47 !important;
     border-radius: 8px !important;
 
-    color: #cbd5e1 !important;
+    color: #d4d9e1 !important;
 }
 
 .panel .examples-holder button:hover {
-    border-color: #7266b4 !important;
+    border-color: #a53b41 !important;
+    background: #211a20 !important;
 }
 
 
 /* =========================================================
    OUTPUT CARDS
-   IMPORTANT:
-   The output Markdown components are actual children
-   of these cards through gr.Group.
    ========================================================= */
 
 .output-card {
@@ -425,18 +445,18 @@ footer {
     padding: 20px !important;
     margin-bottom: 16px !important;
 
-    background: #111722 !important;
+    background: #141922 !important;
 
-    border: 1px solid #2b364b !important;
+    border: 1px solid #343b48 !important;
     border-radius: 12px !important;
 
     box-shadow: 0 4px 14px
-        rgba(0, 0, 0, 0.12) !important;
+        rgba(0, 0, 0, 0.15) !important;
 }
 
 
 /* =========================================================
-   OUTPUT CARD HEADERS
+   OUTPUT HEADINGS
    ========================================================= */
 
 .output-heading {
@@ -448,7 +468,7 @@ footer {
     padding-bottom: 15px;
     margin-bottom: 15px;
 
-    border-bottom: 1px solid #293449;
+    border-bottom: 1px solid #343b47;
 }
 
 .output-number {
@@ -461,18 +481,18 @@ footer {
 
     flex-shrink: 0;
 
-    background: #292541;
-    border: 1px solid #3b365c;
+    background: #371b20 !important;
+    border: 1px solid #713038 !important;
     border-radius: 7px;
 
-    color: #c0b5ff;
+    color: #ff8989 !important;
 
     font-size: 12px;
     font-weight: 800;
 }
 
 .output-name {
-    color: #e5eaf2;
+    color: #eceef2 !important;
 
     font-size: 14px;
     font-weight: 700;
@@ -483,11 +503,11 @@ footer {
 
     padding: 5px 9px;
 
-    background: #211f34;
-    border: 1px solid #38324f;
+    background: #321a1d !important;
+    border: 1px solid #693036 !important;
     border-radius: 6px;
 
-    color: #b9adff;
+    color: #ff9999 !important;
 
     font-size: 10px;
     font-weight: 700;
@@ -503,7 +523,7 @@ footer {
 .output-card .markdown,
 .output-card p,
 .output-card li {
-    color: #cbd5e1 !important;
+    color: #cbd1da !important;
 
     font-size: 14px !important;
     line-height: 1.85 !important;
@@ -513,7 +533,7 @@ footer {
 .output-card h2,
 .output-card h3,
 .output-card h4 {
-    color: #f0f3f8 !important;
+    color: #f2f3f5 !important;
 
     font-weight: 650 !important;
 
@@ -534,12 +554,12 @@ footer {
 }
 
 .output-card strong {
-    color: #f1f4f9 !important;
+    color: #ffffff !important;
     font-weight: 700 !important;
 }
 
 .output-card em {
-    color: #aab5c5 !important;
+    color: #aeb7c5 !important;
 }
 
 .output-card ul,
@@ -554,52 +574,58 @@ footer {
 }
 
 
-/* Inline code */
+/* =========================================================
+   INLINE CODE
+   ========================================================= */
 
 .output-card code {
-    background: #202a3a !important;
-    color: #c4b5fd !important;
+    background: #281b20 !important;
+    color: #ff9999 !important;
 
     padding: 2px 5px;
     border-radius: 4px;
 }
 
 
-/* Code blocks */
+/* =========================================================
+   CODE BLOCKS
+   ========================================================= */
 
 .output-card pre {
-    background: #0c121c !important;
+    background: #0d1118 !important;
 
-    border: 1px solid #293449 !important;
+    border: 1px solid #373d48 !important;
     border-radius: 8px !important;
 
     padding: 13px !important;
 }
 
 
-/* Tables */
+/* =========================================================
+   TABLES
+   ========================================================= */
 
 .output-card table {
     width: 100% !important;
 
     border-collapse: collapse !important;
 
-    border: 1px solid #303b50 !important;
+    border: 1px solid #393f4b !important;
     border-radius: 8px !important;
 }
 
 .output-card th {
-    background: #1b2433 !important;
+    background: #242a34 !important;
 
-    color: #e5eaf2 !important;
+    color: #f0f1f3 !important;
     font-weight: 650 !important;
 }
 
 .output-card td {
-    background: #111722 !important;
+    background: #141922 !important;
 
-    color: #cbd5e1 !important;
-    border-color: #303b50 !important;
+    color: #cbd1da !important;
+    border-color: #393f4b !important;
 }
 
 .output-card th,
@@ -608,7 +634,7 @@ footer {
 }
 
 .output-card a {
-    color: #b3a5ff !important;
+    color: #ff8585 !important;
 }
 
 
@@ -633,11 +659,11 @@ footer {
 
     height: 1px;
 
-    background: #293449;
+    background: #343b47;
 }
 
 .reasoning-divider span {
-    color: #8995a8;
+    color: #a0a9b7 !important;
 
     font-size: 10px;
     font-weight: 700;
@@ -651,7 +677,7 @@ footer {
    ========================================================= */
 
 .results-note {
-    color: #8995a8;
+    color: #929dac !important;
 
     font-size: 12px;
     line-height: 1.7;
@@ -670,14 +696,14 @@ footer {
     padding: 25px 10px 20px;
     margin-top: 28px;
 
-    border-top: 1px solid #293449;
+    border-top: 1px solid #303640;
 
-    color: #8b98ab;
+    color: #a0a9b7 !important;
     font-size: 12px;
 }
 
 #footer a {
-    color: #a99aff;
+    color: #ff8585 !important;
 
     text-decoration: none;
 
@@ -685,11 +711,11 @@ footer {
 }
 
 #footer a:hover {
-    color: #e0d9ff;
+    color: #ffffff !important;
 }
 
 #footer .developer-link {
-    color: #c5baff;
+    color: #ff8585 !important;
 
     font-weight: 700;
 
@@ -699,13 +725,13 @@ footer {
 }
 
 #footer .developer-link:hover {
-    color: #ffffff;
+    color: #ffffff !important;
     text-decoration: underline;
 }
 
 
 /* =========================================================
-   RESPONSIVE DESIGN
+   RESPONSIVE
    ========================================================= */
 
 @media (max-width: 768px) {
@@ -755,7 +781,7 @@ footer {
 
 with gr.Blocks(
     theme=gr.themes.Base(
-        primary_hue="violet",
+        primary_hue="red",
         secondary_hue="slate",
         neutral_hue="slate",
         font=[
@@ -824,7 +850,7 @@ with gr.Blocks(
 
 
         # ----------------------------------------------------
-        # LEFT PANEL: INPUT
+        # LEFT: INPUT PANEL
         # ----------------------------------------------------
 
         with gr.Column(
@@ -885,8 +911,8 @@ with gr.Blocks(
             <div style="
                 margin-top: 22px;
                 padding-top: 15px;
-                border-top: 1px solid #293449;
-                color: #8995a8;
+                border-top: 1px solid #303640;
+                color: #a0a9b7;
                 font-size: 11px;
                 font-weight: 700;
                 letter-spacing: 1px;
@@ -895,8 +921,6 @@ with gr.Blocks(
             </div>
             """)
 
-
-            # Example images
 
             gr.Examples(
                 examples=[
@@ -918,7 +942,7 @@ with gr.Blocks(
 
 
         # ----------------------------------------------------
-        # RIGHT PANEL: RESULTS
+        # RIGHT: RESULTS PANEL
         # ----------------------------------------------------
 
         with gr.Column(
@@ -937,9 +961,9 @@ with gr.Blocks(
             """)
 
 
-            # =================================================
-            # STAGE 1: SPATIAL METADATA
-            # =================================================
+            # ------------------------------------------------
+            # STAGE 1: YOLO
+            # ------------------------------------------------
 
             with gr.Group(
                 elem_classes=["output-card"]
@@ -972,9 +996,9 @@ with gr.Blocks(
                 )
 
 
-            # =================================================
+            # ------------------------------------------------
             # REASONING DIVIDER
-            # =================================================
+            # ------------------------------------------------
 
             gr.HTML("""
             <div class="reasoning-divider">
@@ -983,9 +1007,9 @@ with gr.Blocks(
             """)
 
 
-            # =================================================
-            # STAGE 2: GEMINI REASONING
-            # =================================================
+            # ------------------------------------------------
+            # STAGE 2: GEMINI
+            # ------------------------------------------------
 
             with gr.Group(
                 elem_classes=["output-card"]
@@ -1018,9 +1042,7 @@ with gr.Blocks(
                 )
 
 
-            # =================================================
-            # RESULTS FOOTNOTE
-            # =================================================
+            # Results footnote
 
             gr.HTML("""
             <div class="results-note">
@@ -1078,7 +1100,7 @@ with gr.Blocks(
 
         <p style="
             margin-top: 15px;
-            color: #69778c;
+            color: #858e9d;
             font-size: 11px;
         ">
             Grounded Multimodal Visual Q&A
@@ -1107,7 +1129,7 @@ with gr.Blocks(
 
 
 # ============================================================
-# 5. LAUNCH APPLICATION
+# 5. LAUNCH
 # ============================================================
 
 if __name__ == "__main__":
