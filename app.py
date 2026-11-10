@@ -105,8 +105,8 @@ with gr.Blocks(
             gr.Examples(
                 label="Try an example",
                 examples=[
-                    ["test_images/pexels-bruno-brandao-727244277-18880069.jpg", "How many people are in this scene?"],
-                    ["test_images/noname_13-traffic-3612474_1920.jpg", "How many vehicles are in the top-left?"],
+                    ["https://raw.githubusercontent.com/MohammedThaher01/multimodal-qa/main/test_images/pexels-bruno-brandao-727244277-18880069.jpg", "How many people are in this scene?"],
+                    ["https://raw.githubusercontent.com/MohammedThaher01/multimodal-qa/main/test_images/noname_13-traffic-3612474_1920.jpg", "How many vehicles are in the top-left?"],
                 ],
                 inputs=[input_image, input_question],
             )
