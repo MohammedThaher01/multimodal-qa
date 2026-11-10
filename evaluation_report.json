@@ -1,0 +1,23 @@
+{
+  "model": "yolov8m.pt",
+  "confidence_threshold": 0.25,
+  "images_evaluated": 15,
+  "overall_counting_accuracy_percent": 100.0,
+  "per_image": {
+    "b-dim-DvWJ5zukzWk-unsplash.jpg": 100.0,
+    "istockphoto-1039572340-1024x1024.jpg": 100.0,
+    "istockphoto-2222928140-612x612.jpg": 100.0,
+    "istockphoto-624868974-612x612.webp": 100.0,
+    "jonathan-phelps-d0qJQnP1oX0-unsplash.jpg": 100.0,
+    "masashiwakui-japan-2014616_1920.jpg": 100.0,
+    "miki-schou-yHNcGehClRg-unsplash.jpg": 100.0,
+    "noname_13-traffic-3612474_1920.jpg": 100.0,
+    "pexels-airamdphoto-31258515.jpg": 100.0,
+    "pexels-bruno-brandao-727244277-18880069.jpg": 100.0,
+    "pexels-dominika-polakova-719696518-18563004.jpg": 100.0,
+    "pexels-mora-varela-152664718-10744053.jpg": 100.0,
+    "rahulpandit-street-4768502_1920.jpg": 100.0,
+    "shivaphotographyy-traffic-7272520_1920.jpg": 100.0,
+    "thelegendreturn-car-6810885_1920.jpg": 100.0
+  }
+}
